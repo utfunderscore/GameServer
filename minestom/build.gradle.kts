@@ -23,6 +23,13 @@ dependencies {
     implementation(project(":tnttag"))
     implementation(project(":common"))
     implementation("net.minestom:minestom-snapshots:1_21_5-69b9a5d844")
+    implementation("org.readutf.buildformat:common:1.0.1")
+    implementation("org.readutf.buildformat:s3:1.0.1")
+    implementation("org.readutf.buildformat:postgres:1.0.1")
+
+    implementation("org.tinylog:tinylog-api:2.7.0")
+    implementation("org.tinylog:tinylog-impl:2.7.0")
+    implementation("org.tinylog:slf4j-tinylog:2.7.0")
 }
 
 tasks.test {

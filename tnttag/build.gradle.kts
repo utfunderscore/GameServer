@@ -1,5 +1,5 @@
 plugins {
-    id("java")
+    `java-library`
 }
 
 group = "org.readutf.game"
@@ -19,10 +19,10 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    implementation("org.readutf.arena:core:1.2.2")
-    implementation("org.readutf.arena:minestom:1.2.2")
-    implementation(project(":common"))
-    compileOnly("net.minestom:minestom-snapshots:1_21_5-69b9a5d844")
+    api("org.readutf.arena:core:1.2.2")
+    api("org.readutf.arena:minestom:1.2.2")
+    api(project(":common"))
+    api("net.minestom:minestom-snapshots:1_21_5-69b9a5d844")
 }
 
 tasks.test {
