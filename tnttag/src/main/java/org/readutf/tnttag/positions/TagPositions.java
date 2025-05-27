@@ -5,7 +5,7 @@ import org.readutf.buildformat.common.format.BuildFormat;
 import org.readutf.buildformat.common.format.requirements.Requirement;
 import org.readutf.buildformat.common.markers.Position;
 
-public record GamePositions(
+public record TagPositions(
         @Requirement(startsWith = "spawn") List<Position> positions
 ) implements BuildFormat {
 }

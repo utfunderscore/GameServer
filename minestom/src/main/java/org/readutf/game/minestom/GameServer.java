@@ -2,29 +2,24 @@ package org.readutf.game.minestom;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import io.github.togar2.pvp.MinestomPvP;
+import io.github.togar2.pvp.feature.CombatFeatureSet;
+import io.github.togar2.pvp.feature.CombatFeatures;
+import java.nio.file.Path;
+import me.lucko.spark.minestom.SparkMinestom;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.minestom.server.MinecraftServer;
+import net.minestom.server.command.builder.Command;
 import net.minestom.server.coordinate.ChunkRange;
-import net.minestom.server.coordinate.Pos;
-import net.minestom.server.entity.Entity;
-import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
-import net.minestom.server.event.player.PlayerSpawnEvent;
 import net.minestom.server.instance.Chunk;
-import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.LightingChunk;
 import net.minestom.server.instance.block.Block;
 import org.jetbrains.annotations.NotNull;
-import org.readutf.buildformat.common.BuildManager;
-import org.readutf.buildformat.common.meta.BuildMetaStore;
-import org.readutf.buildformat.common.schematic.BuildSchematicStore;
-import org.readutf.buildformat.s3.S3BuildSchematicStore;
-import org.readutf.buildstore.PostgresDatabaseManager;
-import org.readutf.buildstore.PostgresMetaStore;
-import org.readutf.engine.arena.ArenaManager;
-import org.readutf.engine.minestom.arena.MinestomArenaPlatform;
-import org.readutf.game.GameStarter;
-import org.readutf.tnttag.TagGameStarter;
+import org.readutf.game.minestom.game.GameManager;
+import org.readutf.tnttag.commands.CommandHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
@@ -35,52 +30,50 @@ import software.amazon.awssdk.services.s3.S3Configuration;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameServer {
 
-    private final Logger logger = LoggerFactory.getLogger(GameServer.class);
+    private static final Logger logger = LoggerFactory.getLogger(GameServer.class);
 
     public GameServer() {
         MinecraftServer server = MinecraftServer.init();
 
         setupLimbo();
+        startSpark();
+
+        MinestomPvP.init();
+        CombatFeatureSet featureSet = CombatFeatures.modernVanilla();
+        MinecraftServer.getGlobalEventHandler().addChild(featureSet.createNode());
+
+        for (Command command : CommandHelper.commands) {
+            MinecraftServer.getCommandManager().register(command);
+        }
 
         HikariDataSource database = getDatabase("185.227.70.59", 5432, "builds", "readutf",
                 "w4vA9mtVoC79eUoWKrsv0XycHExRiYRWTzrzQgwc65CP3g2GBgPOY2o9WXRQaZq8");
 
-        S3Client s3Client = getAwsClient("xi0jokcSt6DdWvCsKq0Z", "CIq3mrQPEhugrUJH07sPpftiuCWvl7BuQtJXLX", "https://s3.utf.lol");
+        S3Client s3Client = getAwsClient("xi0joKCSt6DdWvCsKq0Z", "CIq3mrQPEhugrUJH07sPpftiuCWvYl7BuQtQJXLX", "https://s3.utf.lol");
 
-        PostgresDatabaseManager databaseManager = new PostgresDatabaseManager(database);
-        BuildMetaStore metaStore = new PostgresMetaStore(databaseManager);
-        BuildSchematicStore schematicStore = new S3BuildSchematicStore(s3Client, "builds");
+        GameManager gameManager = new GameManager(s3Client, database);
 
-        BuildManager buildManager = new BuildManager(metaStore, schematicStore);
-
-        ArenaManager<Instance> arenaManager = new ArenaManager<>(buildManager, MinestomArenaPlatform.getInstance(), new AtomicInteger());
-
-        GameStarter starter = new TagGameStarter(arenaManager);
-
-        logger.info("Starting Minestom Server");
-
-        MinecraftServer.getGlobalEventHandler().addListener(PlayerSpawnEvent.class, event -> {
-            event.getPlayer().teleport(new Pos(0, 45, 0));
-
-            Collection<@NotNull Player> onlinePlayers = MinecraftServer.getConnectionManager().getOnlinePlayers();
-            if (onlinePlayers.size() == starter.getNeededPlayers()) {
-                try {
-                    logger.info("Starting the game...");
-                    starter.startGame(onlinePlayers.stream().map(Entity::getUuid).toList());
-                } catch (Exception e) {
-                    logger.error("Failed to start game", e);
-                }
-            }
+        MinecraftServer.getCommandManager().setUnknownCommandCallback((sender, command) -> {
+            sender.sendMessage(Component.text("Unknown command.", NamedTextColor.RED));
         });
 
 
+        logger.info("Starting Minestom Server");
+
+
         server.start("0.0.0.0", 25565);
+    }
+
+    private static void startSpark() {
+        Path directory = Path.of("spark");
+        SparkMinestom spark = SparkMinestom.builder(directory)
+                .commands(true) // enables registration of Spark commands
+                .permissionHandler((sender, permission) -> true) // allows all command senders to execute all commands
+                .enable();
     }
 
     private static void setupLimbo() {
