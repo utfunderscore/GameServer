@@ -1,7 +1,6 @@
 package org.readutf.tnttag.stages.fighting.tasks;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import net.minestom.server.component.DataComponents;
@@ -10,7 +9,6 @@ import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.component.LodestoneTracker;
 import org.jetbrains.annotations.NotNull;
 import org.readutf.engine.minestom.MinestomPlatform;
-import org.readutf.engine.minestom.PlatformUtils;
 import org.readutf.engine.task.impl.RepeatingGameTask;
 import org.readutf.tnttag.stages.fighting.FightingStage;
 import org.readutf.tnttag.systems.TntHolderManager;

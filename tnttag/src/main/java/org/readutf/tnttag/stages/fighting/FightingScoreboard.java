@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.readutf.engine.feature.scoreboard.Scoreboard;
 import org.readutf.engine.feature.spectator.SpectatorSystem;
 

@@ -1,7 +1,6 @@
 package org.readutf.game.minestom.game;
 
 import com.zaxxer.hikari.HikariDataSource;
-import io.github.togar2.pvp.MinestomPvP;
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
@@ -14,7 +13,6 @@ import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerSpawnEvent;
 import net.minestom.server.instance.Instance;
 import org.jetbrains.annotations.NotNull;
-import org.readutf.buildformat.common.BuildManager;
 import org.readutf.buildformat.common.meta.BuildMetaStore;
 import org.readutf.buildformat.common.schematic.BuildSchematicStore;
 import org.readutf.buildformat.s3.S3BuildSchematicStore;

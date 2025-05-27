@@ -1,6 +1,5 @@
 package org.readutf.tnttag.stages.fighting;
 
-import io.github.togar2.pvp.events.FinalAttackEvent;
 import io.github.togar2.pvp.events.PlayerExhaustEvent;
 import lombok.extern.slf4j.Slf4j;
 import net.minestom.server.entity.Player;
