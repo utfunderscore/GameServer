@@ -5,7 +5,9 @@ import com.zaxxer.hikari.HikariDataSource;
 import io.github.togar2.pvp.MinestomPvP;
 import io.github.togar2.pvp.feature.CombatFeatureSet;
 import io.github.togar2.pvp.feature.CombatFeatures;
+
 import java.nio.file.Path;
+
 import me.lucko.spark.minestom.SparkMinestom;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -50,10 +52,25 @@ public class GameServer {
             MinecraftServer.getCommandManager().register(command);
         }
 
-        HikariDataSource database = getDatabase("185.227.70.59", 5432, "builds", "readutf",
-                "w4vA9mtVoC79eUoWKrsv0XycHExRiYRWTzrzQgwc65CP3g2GBgPOY2o9WXRQaZq8");
+        String dbHost = System.getenv("DATABASE_HOST");
+        String dbPort = System.getenv("DATABASE_PORT");
+        String dbName = System.getenv("DATABASE_NAME");
+        String dbUser = System.getenv("DATABASE_USER");
+        String dbPassword = System.getenv("DATABASE_PASSWORD");
 
-        S3Client s3Client = getAwsClient("xi0joKCSt6DdWvCsKq0Z", "CIq3mrQPEhugrUJH07sPpftiuCWvYl7BuQtQJXLX", "https://s3.utf.lol");
+        HikariDataSource database = getDatabase(
+                dbHost != null ? dbHost : "localhost",
+                dbPort != null ? Integer.parseInt(dbPort) : 5432,
+                dbName != null ? dbName : "minestom",
+                dbUser != null ? dbUser : "postgres",
+                dbPassword != null ? dbPassword : ""
+        );
+
+        S3Client s3Client = getAwsClient(
+                System.getenv("AWS_ACCESS_KEY_ID"),
+                System.getenv("AWS_SECRET_ACCESS_KEY"),
+                System.getenv("AWS_ENDPOINT") != null ? System.getenv("AWS_ENDPOINT") : "http://localhost:9000"
+        );
 
         GameManager gameManager = new GameManager(s3Client, database);
 

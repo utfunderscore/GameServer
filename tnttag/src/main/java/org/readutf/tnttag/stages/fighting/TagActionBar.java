@@ -4,7 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minestom.server.entity.Player;
 
-import org.readutf.engine.minestom.feature.actionbar.ActionBarProvider;
+import org.readutf.engine.minestom.system.actionbar.ActionBarProvider;
 import org.readutf.tnttag.systems.TntHolderManager;
 
 public class TagActionBar implements ActionBarProvider {

@@ -9,7 +9,9 @@ import org.readutf.engine.arena.Arena;
 import org.readutf.engine.event.GameEventManager;
 import org.readutf.engine.event.exceptions.EventDispatchException;
 import org.readutf.engine.feature.spectator.SpectatorSystem;
-import org.readutf.engine.minestom.feature.spectator.MinestomSpectator;
+import org.readutf.engine.feature.visibility.VisibilitySystem;
+import org.readutf.engine.minestom.system.spectator.MinestomSpectator;
+import org.readutf.engine.minestom.system.visibility.MinestomVisibilityPlatform;
 import org.readutf.engine.task.GameScheduler;
 import org.readutf.engine.team.GameTeam;
 import org.readutf.engine.team.TeamSelector;
@@ -36,6 +38,7 @@ public class TagGame extends Game<Instance, Arena<Instance, TagPositions>, GameT
         registerStage(WarmupStage::new);
         registerStage((game1, previousStage) -> new FightingStage(this, previousStage, 1));
 
-        this.spectatorSystem = addSystem(new SpectatorSystem(this, new MinestomSpectator()));
+
+        this.spectatorSystem = addSystem(new SpectatorSystem(this, new MinestomSpectator(), new VisibilitySystem(this, new MinestomVisibilityPlatform())));
     }
 }
