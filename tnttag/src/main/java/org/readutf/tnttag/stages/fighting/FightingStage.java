@@ -1,7 +1,6 @@
 package org.readutf.tnttag.stages.fighting;
 
 import io.github.togar2.pvp.events.PlayerExhaustEvent;
-import lombok.extern.slf4j.Slf4j;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerBlockBreakEvent;
 import net.minestom.server.event.player.PlayerBlockInteractEvent;
@@ -34,19 +33,21 @@ import org.readutf.tnttag.stages.fighting.tasks.FightingWarmupTask;
 import org.readutf.tnttag.systems.TntHolderManager;
 import org.readutf.tnttag.systems.combat.DisableEventSystem;
 import org.readutf.tnttag.systems.combat.ZeroDamageSystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * TntTagFightingStage represents the main fighting phase of the TNT Tag game.
  * During this stage, players are actively playing, one player is "it" (holding TNT),
  * and there's a countdown until the TNT explodes.
  */
-@Slf4j
 public class FightingStage extends Stage<Instance, Arena<Instance, TagPositions>, GameTeam> {
 
     /**
      * Duration until the TNT explodes during the fighting stage.
      */
     public @NotNull static final Duration EXPLOSION_DURATION = Duration.ofSeconds(20);
+    private static final Logger log = LoggerFactory.getLogger(FightingStage.class);
     private final int roundNumber;
     private @NotNull final TntHolderManager tntHolderManager;
     private @Nullable LocalDateTime explosionTime;

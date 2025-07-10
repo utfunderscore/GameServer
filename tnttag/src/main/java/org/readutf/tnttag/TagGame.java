@@ -1,6 +1,5 @@
 package org.readutf.tnttag;
 
-import lombok.Getter;
 import net.minestom.server.instance.Instance;
 import org.jetbrains.annotations.NotNull;
 import org.readutf.engine.Game;
@@ -19,7 +18,6 @@ import org.readutf.tnttag.positions.TagPositions;
 import org.readutf.tnttag.stages.WarmupStage;
 import org.readutf.tnttag.stages.fighting.FightingStage;
 
-@Getter
 public class TagGame extends Game<Instance, Arena<Instance, TagPositions>, GameTeam> {
 
     private @NotNull final SpectatorSystem spectatorSystem;
@@ -39,5 +37,9 @@ public class TagGame extends Game<Instance, Arena<Instance, TagPositions>, GameT
         registerStage((game1, previousStage) -> new FightingStage(this, previousStage, 1));
 
         this.spectatorSystem = addSystem(new SpectatorSystem(this, new MinestomSpectator(), new VisibilitySystem(this, new MinestomVisibilityPlatform())));
+    }
+
+    public @NotNull SpectatorSystem getSpectatorSystem() {
+        return spectatorSystem;
     }
 }

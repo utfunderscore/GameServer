@@ -1,15 +1,16 @@
 package org.readutf.tnttag.stages.fighting.tasks;
 
 import java.util.stream.IntStream;
-import lombok.extern.slf4j.Slf4j;
 import org.readutf.engine.GameException;
 import org.readutf.engine.minestom.schedular.CountdownTask;
 import org.readutf.tnttag.stages.fighting.FightingStage;
 import org.readutf.tnttag.systems.TntHolderManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
 public class ExplosionTask extends CountdownTask {
 
+    private static final Logger log = LoggerFactory.getLogger(ExplosionTask.class);
     private final TntHolderManager tntHolderManager;
 
     public ExplosionTask(TntHolderManager tntHolderManager) {

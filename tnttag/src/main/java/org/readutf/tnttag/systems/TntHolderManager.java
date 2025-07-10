@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import kotlin.collections.ArrayDeque;
-import lombok.Getter;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -42,7 +41,7 @@ public class TntHolderManager implements System {
 
     private @NotNull final SpectatorSystem spectatorSystem;
     private @NotNull final FightingStage fightingStage;
-    @Getter private final List<UUID> tagged = new ArrayDeque<>();
+    private final List<UUID> tagged = new ArrayDeque<>();
 
     private final Team taggedTeam =
             new TeamBuilder("tagged", MinecraftServer.getTeamManager())
@@ -164,6 +163,10 @@ public class TntHolderManager implements System {
             fightingStage.endStage();
         }
 
+    }
+
+    public List<UUID> getTagged() {
+        return tagged;
     }
 
     private class DamageListener implements TypedGameListener<FinalAttackEvent> {
