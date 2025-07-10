@@ -38,7 +38,6 @@ public class TagGame extends Game<Instance, Arena<Instance, TagPositions>, GameT
         registerStage(WarmupStage::new);
         registerStage((game1, previousStage) -> new FightingStage(this, previousStage, 1));
 
-
         this.spectatorSystem = addSystem(new SpectatorSystem(this, new MinestomSpectator(), new VisibilitySystem(this, new MinestomVisibilityPlatform())));
     }
 }

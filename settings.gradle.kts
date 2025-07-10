@@ -1,4 +1,3 @@
 rootProject.name = "GameServer"
-include("common")
+include("core")
 include("tnttag")
-include("minestom")
