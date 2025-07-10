@@ -20,7 +20,7 @@ dependencies {
 
     api("net.minestom:minestom:2025.07.04-1.21.5")
     api("dev.rollczi:litecommands-bukkit:3.9.7")
-    api("org.readutf.gameservice:client:1.0.14")
+    api("org.readutf.gameservice:client:1.0.20")
 }
 
 tasks.test {
